@@ -1,0 +1,18 @@
+[Unit]
+Description=Ulanzi D200 Manager Daemon
+After=ulanzi-profile.service
+Requires=ulanzi-profile.service
+
+[Service]
+Type=simple
+User=%u
+ExecStart=%h/.local/bin/ulanzi-daemon %h/.config/ulanzi/_current.yaml
+Restart=on-failure
+RestartSec=5
+
+# Device access
+DevicePolicy=auto
+DeviceAllow=char-hidraw rw
+
+[Install]
+WantedBy=default.target

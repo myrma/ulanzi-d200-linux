@@ -13,6 +13,7 @@ setup(
         "obs-websocket-py==0.5.3",
         "pillow==10.1.0",
         "python-daemon==3.0.1",
+        "deepdiff==8.6.1",
     ],
     entry_points={
         "console_scripts": [

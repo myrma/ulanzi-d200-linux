@@ -1,0 +1,7 @@
+/home/mymn/.local/ulanzi/installer/UlanziInstaller
+/home/mymn/.local/ulanzi/installer/appsettings.Development.json
+/home/mymn/.local/ulanzi/installer/appsettings.json
+/home/mymn/.local/ulanzi/installer/UlanziInstaller.dll
+/home/mymn/.local/ulanzi/installer/UlanziInstaller.deps.json
+/home/mymn/.local/ulanzi/installer/UlanziInstaller.runtimeconfig.json
+/home/mymn/.local/ulanzi/installer/UlanziInstaller.pdb

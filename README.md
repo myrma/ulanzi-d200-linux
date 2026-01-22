@@ -1,6 +1,6 @@
 # Ulanzi D200 Manager
 
-A Linux application for managing the Ulanzi D200 StreamDeck device. Configure button images, labels, and actions to control OBS Studio, launch applications, execute commands, and more.
+A Linux application for managing the Ulanzi D200 StreamDeck device with graphical user interface (GUI) support. Configure button images, labels, and actions to control OBS Studio, launch applications, execute commands, and more.
 
 ## Features
 
@@ -12,8 +12,32 @@ A Linux application for managing the Ulanzi D200 StreamDeck device. Configure bu
 - 💻 **Shell Commands** - Execute arbitrary shell commands
 - 🔄 **Hot-Reload** - Update configuration without restarting
 - 🌙 **Background Daemon** - Run as a systemd service
+- 🖥️ **GUI Support** - Blazor-based graphical interface for easy management
 
 ## Quick Start
+
+### With GUI (Recommended)
+
+1. **Install with GUI support:**
+   ```bash
+   ./install-with-gui.sh
+   ```
+
+2. **Start Manager GUI:**
+   ```bash
+   ulanzi-manager-ui
+   ```
+   Or launch from application menu: "Ulanzi D200 Manager"
+
+3. **Use GUI to:**
+   - Start/Stop daemon
+   - Edit configuration
+   - Validate and apply settings
+   - Monitor device status
+
+See [GUI_QUICKSTART.md](GUI_QUICKSTART.md) for detailed GUI instructions.
+
+### Command Line
 
 1. **Install udev rule:**
    ```bash
@@ -41,6 +65,11 @@ A Linux application for managing the Ulanzi D200 StreamDeck device. Configure bu
 
 ## Documentation
 
+### GUI Documentation
+- [🖥️ GUI Quick Start](GUI_QUICKSTART.md) - **Start here for GUI!**
+- [📖 GUI Documentation](docs/GUI_DOCUMENTATION.md)
+
+### General Documentation
 - [📖 Start Here](docs/START_HERE.md)
 - [🚀 Quick Start & Setup](docs/QUICKSTART.md)
 - [⚙️ Setup Guide](docs/SETUP.md)

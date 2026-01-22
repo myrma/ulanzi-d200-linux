@@ -1,0 +1,7 @@
+/home/mymn/.local/ulanzi/manager-ui/UlanziManagerUI
+/home/mymn/.local/ulanzi/manager-ui/appsettings.Development.json
+/home/mymn/.local/ulanzi/manager-ui/appsettings.json
+/home/mymn/.local/ulanzi/manager-ui/UlanziManagerUI.dll
+/home/mymn/.local/ulanzi/manager-ui/UlanziManagerUI.deps.json
+/home/mymn/.local/ulanzi/manager-ui/UlanziManagerUI.runtimeconfig.json
+/home/mymn/.local/ulanzi/manager-ui/UlanziManagerUI.pdb

@@ -1,0 +1,226 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@using UlanziInstaller.Services
+@inject InstallationService InstallationService
+@inject ILogger<Home> Logger
+@implements IDisposable
+
+<PageTitle>Ulanzi D200 Manager - Installation</PageTitle>
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="bi bi-box-seam me-2"></i>
+                        Ulanzi D200 Manager Installation
+                    </h3>
+                </div>
+                
+                <div class="card-body">
+                    @if (!_isInstalling && !_installationComplete)
+                    {
+                        <div class="mb-4">
+                            <h5>Willkommen zur Installation des Ulanzi D200 Managers!</h5>
+                            <p class="text-muted">
+                                Diese Installation wird folgende Schritte durchführen:
+                            </p>
+                            <ul>
+                                <li>USB-Gerätezugriff konfigurieren (udev Regel)</li>
+                                <li>Konfigurationsverzeichnisse erstellen</li>
+                                <li>Python Virtual Environment einrichten</li>
+                                <li>Ulanzi Manager Paket installieren</li>
+                                <li>Standardkonfiguration generieren</li>
+                                @if (_options.InstallGui)
+                                {
+                                    <li>Anwendungs-GUI installieren</li>
+                                }
+                            </ul>
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" 
+                                   type="checkbox" 
+                                   id="installGuiCheck"
+                                   @bind="_options.InstallGui" />
+                            <label class="form-check-label" for="installGuiCheck">
+                                Anwendungs-GUI installieren (empfohlen)
+                            </label>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <strong>Hinweis:</strong> Für die udev-Regel Installation werden sudo-Rechte benötigt.
+                        </div>
+                        
+                        <button class="btn btn-primary btn-lg w-100" @onclick="StartInstallation">
+                            <i class="bi bi-play-circle me-2"></i>
+                            Installation starten
+                        </button>
+                    }
+                    else if (_isInstalling)
+                    {
+                        <div class="mb-4">
+                            <h5>Installation läuft...</h5>
+                            <div class="progress mb-3" style="height: 30px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                     role="progressbar" 
+                                     style="width: @(_progress)%"
+                                     aria-valuenow="@_progress" 
+                                     aria-valuemin="0" 
+                                     aria-valuemax="100">
+                                    @_currentStep
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card bg-dark text-light">
+                            <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                                <pre class="mb-0" style="white-space: pre-wrap;">@_outputLog</pre>
+                            </div>
+                        </div>
+                    }
+                    else if (_installationComplete)
+                    {
+                        <div class="text-center py-4">
+                            @if (_installationSuccess)
+                            {
+                                <i class="bi bi-check-circle text-success" style="font-size: 4rem;"></i>
+                                <h4 class="mt-3 text-success">Installation erfolgreich abgeschlossen!</h4>
+                                <p class="text-muted mt-3">
+                                    Die Installation wurde erfolgreich durchgeführt.
+                                </p>
+                                
+                                @if (_options.InstallGui)
+                                {
+                                    <div class="alert alert-success mt-4">
+                                        <p class="mb-2">Sie können nun die Anwendungs-GUI starten:</p>
+                                        <code>~/.local/bin/ulanzi-manager-ui</code>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-info mt-4">
+                                        <p class="mb-2">Starten Sie den Daemon mit:</p>
+                                        <code>~/.local/bin/ulanzi-daemon ~/.config/ulanzi/config.yaml</code>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <i class="bi bi-x-circle text-danger" style="font-size: 4rem;"></i>
+                                <h4 class="mt-3 text-danger">Installation fehlgeschlagen</h4>
+                                <p class="text-muted mt-3">
+                                    Bei der Installation ist ein Fehler aufgetreten. Bitte prüfen Sie die Ausgabe.
+                                </p>
+                            }
+                            
+                            <button class="btn btn-secondary mt-3" @onclick="ShowOutput">
+                                <i class="bi bi-terminal me-2"></i>
+                                Installationslog anzeigen
+                            </button>
+                        </div>
+                        
+                        @if (_showOutput)
+                        {
+                            <div class="card bg-dark text-light mt-3">
+                                <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                                    <pre class="mb-0" style="white-space: pre-wrap;">@_outputLog</pre>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private InstallationOptions _options = new() { InstallGui = true };
+    private bool _isInstalling = false;
+    private bool _installationComplete = false;
+    private bool _installationSuccess = false;
+    private bool _showOutput = false;
+    private string _outputLog = "";
+    private string _currentStep = "Vorbereitung...";
+    private int _progress = 0;
+    
+    protected override void OnInitialized()
+    {
+        InstallationService.OnOutput += HandleOutput;
+        InstallationService.OnStepChanged += HandleStepChanged;
+    }
+    
+    private async Task StartInstallation()
+    {
+        _isInstalling = true;
+        _outputLog = "";
+        _progress = 0;
+        StateHasChanged();
+        
+        try
+        {
+            _installationSuccess = await InstallationService.InstallAsync(_options);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Installation error");
+            _installationSuccess = false;
+        }
+        finally
+        {
+            _isInstalling = false;
+            _installationComplete = true;
+            _progress = 100;
+            StateHasChanged();
+        }
+    }
+    
+    private void HandleOutput(string message)
+    {
+        _outputLog += message + "\n";
+        InvokeAsync(StateHasChanged);
+    }
+    
+    private void HandleStepChanged(InstallationStep step)
+    {
+        _currentStep = step switch
+        {
+            InstallationStep.Validating => "Validierung...",
+            InstallationStep.InstallingUdevRule => "Udev Regel Installation...",
+            InstallationStep.CreatingDirectories => "Verzeichnisse erstellen...",
+            InstallationStep.CreatingVirtualEnv => "Virtual Environment einrichten...",
+            InstallationStep.GeneratingConfig => "Konfiguration generieren...",
+            InstallationStep.InstallingGui => "GUI installieren...",
+            InstallationStep.Completed => "Abgeschlossen",
+            _ => "Vorbereitung..."
+        };
+        
+        _progress = step switch
+        {
+            InstallationStep.Validating => 10,
+            InstallationStep.InstallingUdevRule => 20,
+            InstallationStep.CreatingDirectories => 35,
+            InstallationStep.CreatingVirtualEnv => 50,
+            InstallationStep.GeneratingConfig => 75,
+            InstallationStep.InstallingGui => 90,
+            InstallationStep.Completed => 100,
+            _ => 0
+        };
+        
+        InvokeAsync(StateHasChanged);
+    }
+    
+    private void ShowOutput()
+    {
+        _showOutput = !_showOutput;
+    }
+    
+    public void Dispose()
+    {
+        InstallationService.OnOutput -= HandleOutput;
+        InstallationService.OnStepChanged -= HandleStepChanged;
+    }
+}

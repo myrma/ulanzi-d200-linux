@@ -1,0 +1,49 @@
+{
+  "Files": [
+    {
+      "Id": "/home/mymn/Dokumente/GitHub/ulanzi-d200-linux/UlanziManagerUI/obj/Debug/net8.0/scopedcss/projectbundle/UlanziManagerUI.bundle.scp.css",
+      "PackagePath": "staticwebassets/UlanziManagerUI.bundle.scp.css"
+    },
+    {
+      "Id": "/home/mymn/Dokumente/GitHub/ulanzi-d200-linux/UlanziManagerUI/wwwroot/app.css",
+      "PackagePath": "staticwebassets/app.css"
+    },
+    {
+      "Id": "/home/mymn/Dokumente/GitHub/ulanzi-d200-linux/UlanziManagerUI/wwwroot/bootstrap/bootstrap.min.css",
+      "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css"
+    },
+    {
+      "Id": "/home/mymn/Dokumente/GitHub/ulanzi-d200-linux/UlanziManagerUI/wwwroot/bootstrap/bootstrap.min.css.map",
+      "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css.map"
+    },
+    {
+      "Id": "/home/mymn/Dokumente/GitHub/ulanzi-d200-linux/UlanziManagerUI/wwwroot/favicon.png",
+      "PackagePath": "staticwebassets/favicon.png"
+    },
+    {
+      "Id": "/home/mymn/Dokumente/GitHub/ulanzi-d200-linux/UlanziManagerUI/wwwroot/fonts/bootstrap-icons.woff",
+      "PackagePath": "staticwebassets/fonts/bootstrap-icons.woff"
+    },
+    {
+      "Id": "/home/mymn/Dokumente/GitHub/ulanzi-d200-linux/UlanziManagerUI/wwwroot/fonts/bootstrap-icons.woff2",
+      "PackagePath": "staticwebassets/fonts/bootstrap-icons.woff2"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.UlanziManagerUI.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.UlanziManagerUI.props",
+      "PackagePath": "build\\UlanziManagerUI.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.UlanziManagerUI.props",
+      "PackagePath": "buildMultiTargeting\\UlanziManagerUI.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.UlanziManagerUI.props",
+      "PackagePath": "buildTransitive\\UlanziManagerUI.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
